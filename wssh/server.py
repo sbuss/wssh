@@ -24,7 +24,7 @@ try:
 except ImportError:
     import json
 
-from StringIO import StringIO
+from io import StringIO
 
 
 class WSSHBridge(object):
