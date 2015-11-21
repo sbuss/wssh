@@ -123,19 +123,26 @@ class WSSHBridge(object):
                         data['resize'].get('width', 80),
                         data['resize'].get('height', 24))
                 if 'data' in data:
-                    channel.send(data['data'])
+                    channel.send(data['data'].encode('utf-8'))
         finally:
             self.close()
 
     def _forward_outbound(self, channel):
         """ Forward outbound traffic (ssh -> websockets) """
         try:
+            data = ''
             while True:
                 wait_read(channel.fileno())
-                data = channel.recv(1024)
-                if not len(data):
+                recv = channel.recv(1024)
+                if not len(recv):
                     return
-                self._websocket.send(json.dumps({'data': data}))
+
+                data += recv
+                try:
+                    self._websocket.send(json.dumps({'data': data}))
+                    data = ''
+                except UnicodeDecodeError:
+                    pass
         finally:
             self.close()
 
