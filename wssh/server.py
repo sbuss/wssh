@@ -5,6 +5,7 @@ wssh.server
 
 This module provides server capabilities of wssh
 """
+import six
 
 import gevent
 from gevent.socket import wait_read, wait_write
@@ -112,7 +113,11 @@ class WSSHBridge(object):
                 data = self._websocket.receive()
                 if not data:
                     return
-                data = json.loads(str(data))
+                if six.PY3:
+                    data = str(data, 'utf-8')
+                else:
+                    data = str(data)
+                data = json.loads(data)
                 if 'resize' in data:
                     channel.resize_pty(
                         data['resize'].get('width', 80),
