@@ -4,6 +4,7 @@ from gevent import monkey
 monkey.patch_all()
 
 from flask import Flask, request
+import six
 from werkzeug.exceptions import BadRequest, Unauthorized
 from wssh.server import WSSHBridge
 
@@ -28,7 +29,7 @@ def index():
         bridge.open(
             hostname='localhost',
             username='root',
-            password='my password'
+            private_key=six.u(open('/root/.ssh/insecure_key', 'r').read()),
             )
     except Exception as e:
         app.logger.exception('Error while connecting: {0}'.format(

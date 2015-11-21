@@ -12,12 +12,17 @@ RUN pip install gevent-websocket
 WORKDIR /srv
 COPY requirements-server.txt /srv/
 COPY requirements-client.txt /srv/
+RUN pip install -r requirements-server.txt
+RUN pip install -r requirements-client.txt
 
 COPY setup.py /srv/
 COPY bin /srv/bin
 COPY wssh /srv/wssh
 COPY examples /srv/examples
 
-RUN pip install -r requirements-server.txt
-RUN pip install -r requirements-client.txt
 RUN python setup.py install
+
+ADD https://github.com/phusion/baseimage-docker/raw/master/image/services/sshd/keys/insecure_key /root/.ssh/insecure_key
+RUN chmod 600 /root/.ssh/insecure_key
+
+CMD ["my_init", "--enable-insecure-key"]
