@@ -70,7 +70,7 @@ def invoke_shell(endpoint):
                     message = json.loads(data)
                     if 'error' in message:
                         raise ConnectionError(message['error'])
-                    sys.stdout.write(decode(message['data']))
+                    sys.stdout.buffer.write(decode(message['data']))
                     sys.stdout.flush()
                 if sys.stdin in r:
                     x = sys.stdin.read(1)
