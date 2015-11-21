@@ -132,7 +132,7 @@ class WSSHBridge(object):
     def _forward_outbound(self, channel):
         """ Forward outbound traffic (ssh -> websockets) """
         try:
-            data = ''
+            data = b''
             while True:
                 wait_read(channel.fileno())
                 recv = channel.recv(1024)
@@ -142,7 +142,7 @@ class WSSHBridge(object):
                 data += recv
                 try:
                     self._websocket.send(json.dumps({'data': encode(data)}))
-                    data = ''
+                    data = b''
                 except UnicodeDecodeError:
                     pass
         finally:
