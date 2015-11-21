@@ -5,7 +5,7 @@ monkey.patch_all()
 
 from flask import Flask, request
 from werkzeug.exceptions import BadRequest, Unauthorized
-import wssh
+from wssh.server import WSSHBridge
 
 
 app = Flask(__name__)
@@ -23,7 +23,7 @@ def index():
         raise Unauthorized
 
     # Initiate a WSSH Bridge and connect to a remote SSH server
-    bridge = wssh.WSSHBridge(request.environ['wsgi.websocket'])
+    bridge = WSSHBridge(request.environ['wsgi.websocket'])
     try:
         bridge.open(
             hostname='localhost',
@@ -52,10 +52,11 @@ def index():
 
 if __name__ == '__main__':
     from gevent.pywsgi import WSGIServer
-    from geventwebsocket import WebSocketHandler
+    from geventwebsocket.handler import WebSocketHandler
 
     app.debug = True
-    http_server = WSGIServer(('localhost', 5000), app,
+    http_server = WSGIServer(
+        ('localhost', 5000), app,
         log=None,
         handler_class=WebSocketHandler)
     print 'Server running on ws://localhost:5000/remote'
