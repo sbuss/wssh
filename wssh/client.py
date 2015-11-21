@@ -13,6 +13,8 @@ import struct
 
 import platform
 
+from wssh.encoding import encode, decode
+
 try:
     import simplejson as json
 except ImportError:
@@ -68,13 +70,13 @@ def invoke_shell(endpoint):
                     message = json.loads(data)
                     if 'error' in message:
                         raise ConnectionError(message['error'])
-                    sys.stdout.write(message['data'])
+                    sys.stdout.buffer.write(decode(message['data']))
                     sys.stdout.flush()
                 if sys.stdin in r:
                     x = sys.stdin.read(1)
                     if len(x) == 0:
                         break
-                    ssh.send(json.dumps({'data': x}))
+                    ssh.send(json.dumps({'data': encode(x)}))
             except (select.error, IOError) as e:
                 if e.args and e.args[0] == errno.EINTR:
                     pass

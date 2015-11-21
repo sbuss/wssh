@@ -129,9 +129,10 @@ function Terminal(cols, rows, handler) {
 
   this.cols = cols || Terminal.geometry[0];
   this.rows = rows || Terminal.geometry[1];
+  this.handler = handler;
 
-  if (handler) {
-    this.on('data', handler);
+  if (this.handler) {
+    this.on('data', this.handler);
   }
 
   this.ybase = 0;
@@ -2432,7 +2433,7 @@ Terminal.prototype.reverseIndex = function() {
 
 // ESC c Full Reset (RIS).
 Terminal.prototype.reset = function() {
-  Terminal.call(this, this.cols, this.rows);
+  Terminal.call(this, this.cols, this.rows, this.handler);
   this.refresh(0, this.rows - 1);
 };
 
