@@ -1,4 +1,3 @@
-gevent
-gevent-websocket
-paramiko
+gevent==1.1a1  # python3 compat
+https://bitbucket.org/hardex/gevent-websocket/get/59026ea992b86ffd617294f8620223725ed4d959.tar.gz#egg=gevent-websocket  # python3 compat until https://bitbucket.org/Jeffrey/gevent-websocket/pull-requests/28/python-3-support/diff merges
 flask
