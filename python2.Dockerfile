@@ -11,11 +11,13 @@ RUN pip install gevent-websocket
 
 WORKDIR /srv
 COPY requirements-server.txt /srv/
-RUN pip install -r requirements-server.txt
+COPY requirements-client.txt /srv/
 
 COPY setup.py /srv/
-COPY wssh /srv/
+COPY bin /srv/bin
+COPY wssh /srv/wssh
+COPY examples /srv/examples
 
-RUN setup.py install
-
-COPY examples /srv/
+RUN pip install -r requirements-server.txt
+RUN pip install -r requirements-client.txt
+RUN python setup.py install
