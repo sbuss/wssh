@@ -20,6 +20,8 @@ from paramiko.ssh_exception import SSHException
 
 import socket
 
+from wssh.encoding import encode, decode
+
 try:
     import simplejson as json
 except ImportError:
@@ -123,7 +125,7 @@ class WSSHBridge(object):
                         data['resize'].get('width', 80),
                         data['resize'].get('height', 24))
                 if 'data' in data:
-                    channel.send(data['data'].encode('utf-8'))
+                    channel.send(encode(data['data']))
         finally:
             self.close()
 
@@ -139,7 +141,7 @@ class WSSHBridge(object):
 
                 data += recv
                 try:
-                    self._websocket.send(json.dumps({'data': data}))
+                    self._websocket.send(json.dumps({'data': encode(data)}))
                     data = ''
                 except UnicodeDecodeError:
                     pass
