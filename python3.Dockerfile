@@ -29,4 +29,6 @@ RUN chmod 600 /root/.ssh/insecure_key* && \
     eval "$(ssh-agent)" && \
     ssh-add /root/.ssh/insecure_key
 
+COPY start-server.sh /srv/
+
 CMD ["my_init", "--enable-insecure-key"]
