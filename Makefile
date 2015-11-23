@@ -22,5 +22,5 @@ ssh3: python3
 	docker stop wssh3 || true
 	docker rm wssh3 || true
 	docker run -d -h wssh3 --name wssh3 wssh_python3
-	docker exec -it wssh3 bash -c "python3 examples/flask_server.py &"
+	docker exec -it wssh3 ./start-server.py
 	docker exec -it wssh3 python3 examples/client.py

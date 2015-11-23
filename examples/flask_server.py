@@ -3,6 +3,9 @@
 from gevent import monkey
 monkey.patch_all()
 
+from getpass import getuser
+import os
+
 from flask import Flask, request
 import six
 from werkzeug.exceptions import BadRequest, Unauthorized
@@ -28,8 +31,8 @@ def index():
     try:
         bridge.open(
             hostname='localhost',
-            username='root',
-            private_key=six.u(open('/root/.ssh/insecure_key', 'r').read()),
+            username=getuser(),
+            private_key=six.u(open(os.path.expanduser('~/.ssh/insecure_key.pub')).read()),
             )
     except Exception as e:
         app.logger.exception('Error while connecting: {0}'.format(
