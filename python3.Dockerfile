@@ -22,7 +22,11 @@ COPY examples /srv/examples
 
 RUN python3 setup.py install
 
+ADD https://github.com/phusion/baseimage-docker/raw/master/image/services/sshd/keys/insecure_key.pub /root/.ssh/insecure_key.pub
 ADD https://github.com/phusion/baseimage-docker/raw/master/image/services/sshd/keys/insecure_key /root/.ssh/insecure_key
-RUN chmod 600 /root/.ssh/insecure_key
+RUN chmod 600 /root/.ssh/insecure_key* && \
+    cat /root/.ssh/insecure_key.pub >> /root/.ssh/authorized_keys && \
+    eval "$(ssh-agent)" && \
+    ssh-add /root/.ssh/insecure_key
 
 CMD ["my_init", "--enable-insecure-key"]
