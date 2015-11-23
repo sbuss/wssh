@@ -32,7 +32,7 @@ def index():
         bridge.open(
             hostname='localhost',
             username=getuser(),
-            private_key=six.u(open(os.path.expanduser('~/.ssh/insecure_key.pub')).read()),
+            private_key=six.u(open(os.path.expanduser('~/.ssh/insecure_key')).read()),
             )
     except Exception as e:
         app.logger.exception('Error while connecting: {0}'.format(
