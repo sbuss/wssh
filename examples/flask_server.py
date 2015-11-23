@@ -63,7 +63,7 @@ if __name__ == '__main__':
         ('localhost', 5000), app,
         log=None,
         handler_class=WebSocketHandler)
-    print 'Server running on ws://localhost:5000/remote'
+    print('Server running on ws://localhost:5000/remote')
     try:
         http_server.serve_forever()
     except KeyboardInterrupt:
